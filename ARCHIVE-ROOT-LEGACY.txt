@@ -1,0 +1,1 @@
+This file marks the location of legacy root-level files before migration to /frontend and /backend folders. Safe to delete after migration is verified.

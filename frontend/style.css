@@ -1,0 +1,114 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #e6f4fa;
+    color: #1a3c40;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px 80px 20px;
+}
+
+.main-title {
+    text-align: center;
+    color: #14505c;
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.sections {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.section {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(20, 80, 92, 0.07);
+    padding: 24px 32px;
+    position: relative;
+}
+
+.section.left {
+    flex-direction: row;
+}
+
+.section.right {
+    flex-direction: row-reverse;
+}
+
+.number {
+    min-width: 54px;
+    min-height: 54px;
+    background: #b2e4f7;
+    color: #14505c;
+    font-size: 2.1rem;
+    font-weight: 800;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(20, 80, 92, 0.08);
+    margin-top: 4px;
+}
+
+.content h2 {
+    margin: 0 0 8px 0;
+    color: #14505c;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.content p {
+    margin: 0;
+    color: #1a3c40;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.screenshot-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 48px;
+}
+
+#screenshot-btn {
+    background: #14505c;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 24px;
+    padding: 16px 40px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(20, 80, 92, 0.10);
+    transition: background 0.2s;
+}
+
+#screenshot-btn:hover {
+    background: #1a3c40;
+}
+
+@media (max-width: 700px) {
+    .container {
+        padding: 20px 4px 60px 4px;
+    }
+    .section {
+        flex-direction: column !important;
+        align-items: stretch;
+        padding: 18px 12px;
+    }
+    .number {
+        margin-bottom: 12px;
+        margin-top: 0;
+    }
+}

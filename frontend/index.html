@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harnessing Infographics for Effective Pinterest Marketing</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">Harnessing Infographics for Effective Pinterest Marketing</h1>
+        <div class="sections">
+            <div class="section left">
+                <div class="number">1</div>
+                <div class="content">
+                    <h2>Eye-Catching Visuals</h2>
+                    <p>Use bold colors and clear graphics to grab attention in crowded Pinterest feeds.</p>
+                </div>
+            </div>
+            <div class="section right">
+                <div class="number">2</div>
+                <div class="content">
+                    <h2>Concise Messaging</h2>
+                    <p>Keep text brief and impactful for quick comprehension and sharing.</p>
+                </div>
+            </div>
+            <div class="section left">
+                <div class="number">3</div>
+                <div class="content">
+                    <h2>Brand Consistency</h2>
+                    <p>Incorporate your logo, fonts, and colors to reinforce brand identity.</p>
+                </div>
+            </div>
+            <div class="section right">
+                <div class="number">4</div>
+                <div class="content">
+                    <h2>Vertical Orientation</h2>
+                    <p>Design infographics vertically to maximize space and visibility on Pinterest.</p>
+                </div>
+            </div>
+            <div class="section left">
+                <div class="number">5</div>
+                <div class="content">
+                    <h2>Data-Driven Insights</h2>
+                    <p>Present statistics and facts to build credibility and encourage saves.</p>
+                </div>
+            </div>
+            <div class="section right">
+                <div class="number">6</div>
+                <div class="content">
+                    <h2>Clear Call-to-Action</h2>
+                    <p>Guide viewers to your website or product with a strong CTA.</p>
+                </div>
+            </div>
+            <div class="section left">
+                <div class="number">7</div>
+                <div class="content">
+                    <h2>Optimize for Sharing</h2>
+                    <p>Make it easy for users to repin and share your infographic widely.</p>
+                </div>
+            </div>
+        </div>
+        <div class="screenshot-btn-wrapper">
+            <button id="screenshot-btn">Take Screenshot</button>
+        </div>
+    </div>
+    <script>
+    document.getElementById('screenshot-btn').addEventListener('click', async function() {
+        // Blink effect
+        const blink = document.createElement('div');
+        blink.style.position = 'fixed';
+        blink.style.top = 0;
+        blink.style.left = 0;
+        blink.style.width = '100vw';
+        blink.style.height = '100vh';
+        blink.style.background = 'white';
+        blink.style.opacity = '0.7';
+        blink.style.zIndex = '9999';
+        blink.style.pointerEvents = 'none';
+        document.body.appendChild(blink);
+        setTimeout(() => {
+            blink.style.transition = 'opacity 0.3s';
+            blink.style.opacity = '0';
+            setTimeout(() => blink.remove(), 300);
+        }, 80);
+
+        const response = await fetch('/screenshot', { method: 'POST' });
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'infographic-screenshot.png';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+        } else {
+            alert('Screenshot failed.');
+        }
+    });
+    </script>
+</body>
+</html>
