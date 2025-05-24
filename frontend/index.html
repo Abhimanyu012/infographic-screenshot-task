@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Harnessing Infographics for Effective Pinterest Marketing</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -13,50 +17,50 @@
             <div class="section left">
                 <div class="number">1</div>
                 <div class="content">
-                    <h2>Eye-Catching Visuals</h2>
-                    <p>Use bold colors and clear graphics to grab attention in crowded Pinterest feeds.</p>
+                    <h2>Enhancing Visual Appeal</h2>
+                    <p>Infographics leverage visually appealing designs, which can capture users' attention quickly on Pinterest's image-centric platform. This visual aspect can lead to increased engagement and higher pin rates.</p>
                 </div>
             </div>
             <div class="section right">
                 <div class="number">2</div>
                 <div class="content">
-                    <h2>Concise Messaging</h2>
-                    <p>Keep text brief and impactful for quick comprehension and sharing.</p>
+                    <h2>Boosting Brand Awareness</h2>
+                    <p>Consistent use of infographics helps in building brand identity. By using specific colors, fonts, and styles, brands can create a distinct visual language that resonates with users and enhances recall.</p>
                 </div>
             </div>
             <div class="section left">
                 <div class="number">3</div>
                 <div class="content">
-                    <h2>Brand Consistency</h2>
-                    <p>Incorporate your logo, fonts, and colors to reinforce brand identity.</p>
+                    <h2>Encouraging Shares and Saves</h2>
+                    <p>Infographics are highly shareable content; they encourage users to save, pin, or share them due to their informative nature. This can lead to organic reach and visibility on Pinterest.</p>
                 </div>
             </div>
             <div class="section right">
                 <div class="number">4</div>
                 <div class="content">
-                    <h2>Vertical Orientation</h2>
-                    <p>Design infographics vertically to maximize space and visibility on Pinterest.</p>
+                    <h2>Driving Traffic to Websites</h2>
+                    <p>Infographics can include call-to-actions (CTAs) linking back to your website or landing page, facilitating the conversion of Pinterest users into website visitors, thus driving traffic effectively.</p>
                 </div>
             </div>
             <div class="section left">
                 <div class="number">5</div>
                 <div class="content">
-                    <h2>Data-Driven Insights</h2>
-                    <p>Present statistics and facts to build credibility and encourage saves.</p>
+                    <h2>Leveraging SEO Benefits</h2>
+                    <p>When properly tagged with keywords and descriptions, infographics can enhance SEO on Pinterest. This can improve discoverability, making it easier for users interested in specific topics to find your pins.</p>
                 </div>
             </div>
             <div class="section right">
                 <div class="number">6</div>
                 <div class="content">
-                    <h2>Clear Call-to-Action</h2>
-                    <p>Guide viewers to your website or product with a strong CTA.</p>
+                    <h2>Creating Educational Content</h2>
+                    <p>Infographics can serve as educational tools or tutorials, providing value to your audience. This type of informative content can establish authority in your niche and attract a loyal following.</p>
                 </div>
             </div>
             <div class="section left">
                 <div class="number">7</div>
                 <div class="content">
-                    <h2>Optimize for Sharing</h2>
-                    <p>Make it easy for users to repin and share your infographic widely.</p>
+                    <h2>Simplifying Complex Information</h2>
+                    <p>Infographics simplify complex data and concepts into digestible visual formats. This is particularly useful for e-commerce brands or service providers looking to explain products or services quickly.</p>
                 </div>
             </div>
         </div>
@@ -65,24 +69,49 @@
         </div>
     </div>
     <script>
+    // Responsive scaling to fit all content in viewport
+    function scaleContainerToFit() {
+        const container = document.querySelector('.container');
+        if (!container) return;
+        // Reset scale
+        container.style.setProperty('--container-scale', 1);
+        // Get bounding rect
+        const rect = container.getBoundingClientRect();
+        const scaleX = window.innerWidth / rect.width;
+        const scaleY = window.innerHeight / rect.height;
+        const scale = Math.min(scaleX, scaleY, 1);
+        container.style.setProperty('--container-scale', scale);
+    }
+    window.addEventListener('resize', scaleContainerToFit);
+    window.addEventListener('DOMContentLoaded', scaleContainerToFit);
+
     document.getElementById('screenshot-btn').addEventListener('click', async function() {
-        // Blink effect
+        const btn = this;
+        btn.classList.add('downloading');
+        // --- Custom blink effect ---
         const blink = document.createElement('div');
         blink.style.position = 'fixed';
         blink.style.top = 0;
         blink.style.left = 0;
         blink.style.width = '100vw';
         blink.style.height = '100vh';
-        blink.style.background = 'white';
-        blink.style.opacity = '0.7';
+        blink.style.background = 'rgba(30,30,40,0.92)';
+        blink.style.opacity = '0';
         blink.style.zIndex = '9999';
         blink.style.pointerEvents = 'none';
+        blink.style.transition = 'opacity 0.18s';
         document.body.appendChild(blink);
         setTimeout(() => {
-            blink.style.transition = 'opacity 0.3s';
-            blink.style.opacity = '0';
-            setTimeout(() => blink.remove(), 300);
-        }, 80);
+            blink.style.opacity = '1';
+            setTimeout(() => {
+                blink.style.opacity = '0';
+                setTimeout(() => blink.remove(), 220);
+            }, 180);
+        }, 10);
+
+        const icon = document.createElement('i');
+        icon.className = 'fa-solid fa-spinner download-icon';
+        btn.appendChild(icon);
 
         const response = await fetch('/screenshot', { method: 'POST' });
         if (response.ok) {
@@ -98,6 +127,8 @@
         } else {
             alert('Screenshot failed.');
         }
+        btn.classList.remove('downloading');
+        if (icon) icon.remove();
     });
     </script>
 </body>
