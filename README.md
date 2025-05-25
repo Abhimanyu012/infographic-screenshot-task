@@ -1,5 +1,7 @@
 # Infographic Screenshot Website
 
+![Infographic Screenshot Demo](infographic-screenshot%20(19).png)
+
 A responsive, single-page infographic layout built with HTML, CSS, and vanilla JavaScript (frontend) and a Node.js + Express backend with Puppeteer to capture a screenshot of the infographic as an image.
 
 ## Features
