@@ -37,7 +37,13 @@ app.post('/screenshot', async (req, res) => {
             const targetUrl = isProduction
                 ? (process.env.RENDER_EXTERNAL_URL || 'https://infographic-screenshot-task-1.onrender.com/')
                 : `http://localhost:${actualPort}/`;
-            await page.goto(targetUrl, { waitUntil: 'networkidle0' });
+            console.log('Puppeteer navigating to:', targetUrl);
+            try {
+                await page.goto(targetUrl, { waitUntil: 'networkidle0', timeout: 15000 });
+            } catch (navErr) {
+                console.error('Puppeteer navigation error:', navErr);
+                throw new Error('Failed to load target page for screenshot.');
+            }
             const screenshot = await page.screenshot({ fullPage: true, type: 'png' });
             return screenshot;
         })();
