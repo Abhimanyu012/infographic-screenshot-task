@@ -2,15 +2,12 @@
 FROM node:18-alpine
 
 # Install Chromium and dependencies
-RUN apk add --no-cache \\\
-    chromium \\\
-    nss \\\
-    freetype \\\
-    harfbuzz \\\
-    ttf-freefont \\\
-    udev \\\
-    xvfb \\\
-    gcompat # for libgconf-2.so.4 if needed by older chrome versions
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    harfbuzz \
+    ttf-freefont
 
 # Tell Puppeteer to skip downloading Chrome and use the system-installed version.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
