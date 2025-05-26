@@ -37,9 +37,21 @@ app.post('/screenshot', async (req, res) => {
                 executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
             });
             console.log('Puppeteer launched. Opening new page...');
-            const page = await browser.newPage();
-            // Increase delay to 2 seconds for Render race condition workaround
-            await new Promise(r => setTimeout(r, 2000));
+            // Retry loop for newPage() to avoid 'Requesting main frame too early!'
+            let page;
+            let pageCreated = false;
+            for (let attempt = 1; attempt <= 3; attempt++) {
+                try {
+                    page = await browser.newPage();
+                    await new Promise(r => setTimeout(r, 2000));
+                    pageCreated = true;
+                    break;
+                } catch (e) {
+                    console.error(`Attempt ${attempt} to create new page failed:`, e);
+                    await new Promise(r => setTimeout(r, 1000));
+                }
+            }
+            if (!pageCreated) throw new Error('Failed to create Puppeteer page after retries.');
             const isProduction = process.env.RENDER === 'true' || process.env.RENDER_EXTERNAL_URL;
             const actualPort = process.env.PORT || PORT || 3000;
             const targetUrl = isProduction
