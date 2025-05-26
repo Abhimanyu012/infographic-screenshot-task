@@ -9,6 +9,11 @@ const PORT = process.env.PORT || 3000;
 // Serve static files from frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
 // Screenshot endpoint
 app.post('/screenshot', async (req, res) => {
     console.log('Received /screenshot request');
@@ -25,14 +30,14 @@ app.post('/screenshot', async (req, res) => {
             }, timeoutMs);
         });
         const screenshotPromise = (async () => {
+            console.log('Launching Puppeteer...');
             browser = await puppeteer.launch({
                 args: ['--no-sandbox', '--disable-setuid-sandbox'],
                 executablePath: process.env.PUPPETEER_EXECUTABLE_PATH // ensure correct Chromium path
             });
+            console.log('Puppeteer launched. Creating new page...');
             const page = await browser.newPage();
-            // Use public Render URL for Puppeteer in production
             const isProduction = process.env.RENDER === 'true' || process.env.RENDER_EXTERNAL_URL;
-            // Always use the actual running port for local Puppeteer
             const actualPort = process.env.PORT || PORT || 3000;
             const targetUrl = isProduction
                 ? (process.env.RENDER_EXTERNAL_URL || 'https://infographic-screenshot-task-1.onrender.com/')
@@ -40,11 +45,13 @@ app.post('/screenshot', async (req, res) => {
             console.log('Puppeteer navigating to:', targetUrl);
             try {
                 await page.goto(targetUrl, { waitUntil: 'networkidle0', timeout: 15000 });
+                console.log('Page loaded successfully. Taking screenshot...');
             } catch (navErr) {
                 console.error('Puppeteer navigation error:', navErr);
                 throw new Error('Failed to load target page for screenshot.');
             }
             const screenshot = await page.screenshot({ fullPage: true, type: 'png' });
+            console.log('Screenshot taken.');
             return screenshot;
         })();
         const screenshot = await Promise.race([screenshotPromise, timeoutPromise]);
@@ -64,7 +71,7 @@ app.post('/screenshot', async (req, res) => {
             if (err && err.stack) {
                 console.error('Stack trace:', err.stack); // Print stack trace for debugging
             }
-            res.status(500).send('Screenshot failed.');
+            res.status(500).send('Screenshot failed. ' + (err && err.message ? err.message : ''));
         }
     } finally {
         if (browser) await browser.close();
