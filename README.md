@@ -16,11 +16,14 @@ infographic-screenshot-task/
 ├── backend/
 │   ├── server.js
 │   ├── package.json
+│   ├── .env.example
+│   └── README.md
 ├── frontend/
 │   ├── index.html
-│   └── style.css
+│   ├── style.css
+│   ├── package.json
+│   └── README.md
 ├── .env.example
-├── .env (optional)
 ├── .gitignore
 ├── Dockerfile
 └── README.md
@@ -48,7 +51,7 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser.
 Click the **Take Screenshot** button at the bottom of the page. The server will generate and download a PNG screenshot of the infographic.
 
 ## Environment Variables
-You can set the port in a `.env` file in the root:
+You can set the port in a `.env` file in the root or in `/backend`:
 ```
 PORT=3000
 ```

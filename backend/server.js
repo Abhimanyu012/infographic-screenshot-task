@@ -28,6 +28,9 @@ app.post('/screenshot', async (req, res) => {
         res.send(screenshot);
     } catch (err) {
         console.error('Screenshot error:', err); // Log the real error
+        if (err && err.stack) {
+            console.error('Stack trace:', err.stack); // Print stack trace for debugging
+        }
         res.status(500).send('Screenshot failed.');
     } finally {
         if (browser) await browser.close();
