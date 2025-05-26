@@ -17,7 +17,9 @@ app.post('/screenshot', async (req, res) => {
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         const page = await browser.newPage();
-        await page.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle0' });
+        // Use dynamic URL for Puppeteer
+        const targetUrl = `${req.protocol}://${req.get('host')}/`;
+        await page.goto(targetUrl, { waitUntil: 'networkidle0' });
         const screenshot = await page.screenshot({ fullPage: true, type: 'png' });
         res.set({
             'Content-Type': 'image/png',
@@ -25,6 +27,7 @@ app.post('/screenshot', async (req, res) => {
         });
         res.send(screenshot);
     } catch (err) {
+        console.error('Screenshot error:', err); // Log the real error
         res.status(500).send('Screenshot failed.');
     } finally {
         if (browser) await browser.close();
