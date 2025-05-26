@@ -17,6 +17,7 @@ app.get('/health', (req, res) => {
 // Screenshot endpoint
 app.post('/screenshot', async (req, res) => {
     console.log('Received /screenshot request');
+    console.log('Memory usage at start:', process.memoryUsage());
     let browser;
     // Set a timeout for Puppeteer (e.g., 20 seconds)
     const timeoutMs = 20000;
@@ -33,9 +34,9 @@ app.post('/screenshot', async (req, res) => {
             console.log('Launching Puppeteer...');
             browser = await puppeteer.launch({
                 args: ['--no-sandbox', '--disable-setuid-sandbox'],
-                executablePath: process.env.PUPPETEER_EXECUTABLE_PATH // ensure correct Chromium path
+                executablePath: process.env.PUPPETEER_EXECUTABLE_PATH
             });
-            console.log('Puppeteer launched. Creating new page...');
+            console.log('Puppeteer launched. Opening new page...');
             const page = await browser.newPage();
             const isProduction = process.env.RENDER === 'true' || process.env.RENDER_EXTERNAL_URL;
             const actualPort = process.env.PORT || PORT || 3000;
@@ -45,7 +46,7 @@ app.post('/screenshot', async (req, res) => {
             console.log('Puppeteer navigating to:', targetUrl);
             try {
                 await page.goto(targetUrl, { waitUntil: 'networkidle0', timeout: 15000 });
-                console.log('Page loaded successfully. Taking screenshot...');
+                console.log('Navigation successful. Taking screenshot...');
             } catch (navErr) {
                 console.error('Puppeteer navigation error:', navErr);
                 throw new Error('Failed to load target page for screenshot.');
@@ -71,10 +72,15 @@ app.post('/screenshot', async (req, res) => {
             if (err && err.stack) {
                 console.error('Stack trace:', err.stack); // Print stack trace for debugging
             }
-            res.status(500).send('Screenshot failed. ' + (err && err.message ? err.message : ''));
+            res.status(500).send('Screenshot failed.');
         }
     } finally {
-        if (browser) await browser.close();
+        if (browser) {
+            console.log('Closing Puppeteer browser...');
+            await browser.close();
+            console.log('Puppeteer browser closed.');
+        }
+        console.log('Memory usage at end:', process.memoryUsage());
     }
 });
 
