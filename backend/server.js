@@ -32,9 +32,11 @@ app.post('/screenshot', async (req, res) => {
             const page = await browser.newPage();
             // Use public Render URL for Puppeteer in production
             const isProduction = process.env.RENDER === 'true' || process.env.RENDER_EXTERNAL_URL;
+            // Always use the actual running port for local Puppeteer
+            const actualPort = process.env.PORT || PORT || 3000;
             const targetUrl = isProduction
                 ? (process.env.RENDER_EXTERNAL_URL || 'https://infographic-screenshot-task-1.onrender.com/')
-                : `http://localhost:${PORT}/`;
+                : `http://localhost:${actualPort}/`;
             await page.goto(targetUrl, { waitUntil: 'networkidle0' });
             const screenshot = await page.screenshot({ fullPage: true, type: 'png' });
             return screenshot;
