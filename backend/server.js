@@ -17,8 +17,8 @@ app.post('/screenshot', async (req, res) => {
             args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         const page = await browser.newPage();
-        // Use dynamic URL for Puppeteer
-        const targetUrl = `${req.protocol}://${req.get('host')}/`;
+        // Use dynamic URL for Puppeteer, pointing to the local server
+        const targetUrl = `http://localhost:${PORT}/`; // Changed this line
         await page.goto(targetUrl, { waitUntil: 'networkidle0' });
         const screenshot = await page.screenshot({ fullPage: true, type: 'png' });
         res.set({
