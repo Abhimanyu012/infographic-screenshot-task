@@ -38,6 +38,8 @@ app.post('/screenshot', async (req, res) => {
             });
             console.log('Puppeteer launched. Opening new page...');
             const page = await browser.newPage();
+            // Workaround for Puppeteer 'Requesting main frame too early!' error on Render
+            await new Promise(r => setTimeout(r, 500));
             const isProduction = process.env.RENDER === 'true' || process.env.RENDER_EXTERNAL_URL;
             const actualPort = process.env.PORT || PORT || 3000;
             const targetUrl = isProduction
