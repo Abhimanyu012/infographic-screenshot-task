@@ -38,8 +38,8 @@ app.post('/screenshot', async (req, res) => {
             });
             console.log('Puppeteer launched. Opening new page...');
             const page = await browser.newPage();
-            // Workaround for Puppeteer 'Requesting main frame too early!' error on Render
-            await new Promise(r => setTimeout(r, 500));
+            // Increase delay to 2 seconds for Render race condition workaround
+            await new Promise(r => setTimeout(r, 2000));
             const isProduction = process.env.RENDER === 'true' || process.env.RENDER_EXTERNAL_URL;
             const actualPort = process.env.PORT || PORT || 3000;
             const targetUrl = isProduction
@@ -47,7 +47,7 @@ app.post('/screenshot', async (req, res) => {
                 : `http://localhost:${actualPort}/`;
             console.log('Puppeteer navigating to:', targetUrl);
             try {
-                await page.goto(targetUrl, { waitUntil: 'networkidle0', timeout: 15000 });
+                await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
                 console.log('Navigation successful. Taking screenshot...');
             } catch (navErr) {
                 console.error('Puppeteer navigation error:', navErr);
