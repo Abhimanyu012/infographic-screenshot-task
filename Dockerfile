@@ -11,7 +11,7 @@ RUN apk add --no-cache \
 
 # Tell Puppeteer to skip downloading Chrome and use the system-installed version.
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app
 

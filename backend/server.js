@@ -14,7 +14,8 @@ app.post('/screenshot', async (req, res) => {
     let browser;
     try {
         browser = await puppeteer.launch({
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH // ensure correct Chromium path
         });
         const page = await browser.newPage();
         // Use dynamic URL for Puppeteer, pointing to the local server
